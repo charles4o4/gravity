@@ -10,12 +10,12 @@ const sizes = {
 
 // COMET ATTRIBUTES
 // -----------------------------------------------------------------------------
-const cometSpeed = 70;
+let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-const cometSpawnInterval = 7000; // time in milliseconds
-let cometsSpawned = 0;
+const cometSpawnInterval = 2000; // time in milliseconds
+let cometsDestroyed = 0;
 
 const wordWrapWidth = 150;
 
@@ -38,7 +38,6 @@ class GameScene extends Phaser.Scene {
 
     // spawn the comet immediately
     this.spawnComet();
-    cometsSpawned++;
 
     this.time.addEvent({
       delay: cometSpawnInterval,
@@ -78,7 +77,7 @@ class GameScene extends Phaser.Scene {
   }
 
   generateRandomString() {
-    let length = 4
+    let length = 1
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // All possible characters
     let result = "";
 
@@ -115,7 +114,6 @@ class GameScene extends Phaser.Scene {
     cometContainer.body.setVelocityY(cometSpeed);
 
     this.comets.push(cometContainer);
-    cometsSpawned++;
   }
 
   destroyComet(text) {
@@ -125,6 +123,12 @@ class GameScene extends Phaser.Scene {
       if (cometText.text === text) {
         comet.destroy();
         this.comets.splice(index, 1); // Remove comet from the array
+      
+        cometsDestroyed++;
+        if (cometsDestroyed % 5 === 0 ) {
+          cometSpeed += 20;
+          console.log(cometSpeed)
+        }
       }
     });
   }
