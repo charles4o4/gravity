@@ -14,7 +14,7 @@ let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-const cometSpawnInterval = 2000; // time in milliseconds
+const cometSpawnInterval = 6000; // time in milliseconds
 let cometsDestroyed = 0;
 
 const wordWrapWidth = 150;
