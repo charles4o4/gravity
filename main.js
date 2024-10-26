@@ -60,6 +60,9 @@ class GameScene extends Phaser.Scene {
 
   }
 
+
+  // USER DEFINED FUNCTIONS
+  // -----------------------------------------------------------------------------
   getRandomX() {
     // keep in mind that the origin is 0.5
     const minX = (cometWidth * cometScale) / 2; // Minimum to see the full image
