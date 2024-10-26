@@ -1,14 +1,19 @@
 import './style.css'
 import Phaser, { Physics } from 'phaser'
 
+// WINDOW ATTRIBUTES
+// -----------------------------------------------------------------------------
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight,
 }
 
+// COMET ATTRIBUTES
+// -----------------------------------------------------------------------------
 const cometSpeed = 100
 const cometScale = 0.3
 const cometWidth = 512
+const cometHeight = 512
 
 class GameScene extends Phaser.Scene{
   constructor() {
@@ -24,7 +29,23 @@ class GameScene extends Phaser.Scene{
   create(){
     this.add.image(0, 0, "bg").setOrigin(0,0).setDisplaySize(sizes.width, sizes.height)
   
-    this.target = this.physics.add.image(0, this.getRandomX(), 'comet').setOrigin(0,0).setScale(cometScale).setVelocityY(cometSpeed)
+    // COMET CONTAINER
+    // -----------------------------------------------------------------------------
+    const cometSprite = this.physics.add.image(0, 0, 'comet').setOrigin(0.5).setScale(cometScale)
+
+    const cometText = this.add.text(0, 0, 'your mom is big', {
+      fontSize: '16px',
+      color: '#FFF',
+      fontFamily: 'Arial',
+    }).setOrigin(0.5)
+
+    this.target = this.add.container(this.getRandomX(), 0, [cometSprite, cometText])
+    this.target.setSize(cometWidth * cometScale, cometHeight * cometScale)
+
+    this.physics.world.enable(this.target)
+    this.target.body.setVelocityY(cometSpeed)
+
+
   }
 
   update(){
