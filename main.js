@@ -69,11 +69,13 @@ class GameScene extends Phaser.Scene {
   // USER DEFINED FUNCTIONS
   // -----------------------------------------------------------------------------
   getRandomX() {
+    // UPDATE THIS
+
     // keep in mind that the origin is 0.5
     const minX = (cometWidth * cometScale) / 2; // Minimum to see the full image
     const maxX = sizes.width - minX; // The width of the spawn area
 
-    return Math.floor(Math.random() * (maxX - minX)) + minX; // in case Math.random() = 0, add the minX
+    return Math.floor(Math.random() * (maxX - minX)) + minX + 300; // in case Math.random() = 0, add the minX
   }
 
   generateRandomString() {
@@ -142,7 +144,7 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      debug: true,
+      debug: false,
     },
   },
   scene: [GameScene],

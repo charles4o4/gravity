@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,6 +7,18 @@
     <title>gravity</title>
   </head>
   <body>
+    <div id="progress-board">
+      <div class="header">
+        <p id="game-name">Gravity</p>
+      </div>
+      <div id="progress-container">
+        <p class="progress-header">SCORE</p>
+        <p class="progress-number">420</p>
+        <p class="progress-header">LEVEL</p>
+        <p class="progress-number">1</p>
+      </div>
+      <button id="pausebtn">Pause</button>
+    </div>
     <canvas id="gameCanvas"></canvas>
     <input type="text" id="wordInput" placeholder="Type the word here..." />
     <script type="module" src="/main.js"></script>
