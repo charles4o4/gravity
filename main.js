@@ -1,5 +1,5 @@
 import './style.css'
-import Phaser, { Physics } from 'phaser'
+import Phaser from 'phaser'
 
 // WINDOW ATTRIBUTES
 // -----------------------------------------------------------------------------
@@ -11,9 +11,11 @@ const sizes = {
 // COMET ATTRIBUTES
 // -----------------------------------------------------------------------------
 const cometSpeed = 100
-const cometScale = 0.3
+const cometScale = 0.4
 const cometWidth = 512
 const cometHeight = 512
+
+const wordWrapWidth = 150
 
 class GameScene extends Phaser.Scene{
   constructor() {
@@ -33,10 +35,11 @@ class GameScene extends Phaser.Scene{
     // -----------------------------------------------------------------------------
     const cometSprite = this.physics.add.image(0, 0, 'comet').setOrigin(0.5).setScale(cometScale)
 
-    const cometText = this.add.text(0, 0, 'your mom is big', {
+    const cometText = this.add.text(0, 0, 'word', {
       fontSize: '16px',
       color: '#FFF',
       fontFamily: 'Arial',
+      wordWrap: {width: wordWrapWidth, useAdvancedWrap: true}
     }).setOrigin(0.5)
 
     this.target = this.add.container(this.getRandomX(), 0, [cometSprite, cometText])
@@ -49,7 +52,7 @@ class GameScene extends Phaser.Scene{
   }
 
   update(){
-    // check if the comet is not visable anymore
+    // check if the comet is not visable anymore, if true DESTROY!
     if (this.target.y >= sizes.height) {
       this.target.setY(0)
       this.target.setX(this.getRandomX())
