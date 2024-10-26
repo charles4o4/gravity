@@ -56,11 +56,12 @@ class GameScene extends Phaser.Scene{
     }
   }
 
-  getRandomX() {
-    // we are subtracting cometWidth * cometScale from sizes.width
-    // because we want to be able to see the comet if it spawns completely right
-    // keep in mind that the origin of the sprite is (0,0)
-    return Math.floor(Math.random() * (sizes.width - cometWidth * cometScale))
+  getRandomX() {  
+    // keep in mind that the origin is 0.5
+    const minX = cometWidth * cometScale / 2; // Minimum to see the full image 
+    const maxX = sizes.width - minX; // The width of the spawn area
+
+    return Math.floor(Math.random() * (maxX - minX)) + minX // in case Math.random() = 0, add the minX
   }
 }
 
