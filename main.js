@@ -44,7 +44,15 @@ class GameScene extends Phaser.Scene {
       delay: cometSpawnInterval,
       callback: this.spawnComet,
       callbackScope: this, // Ensures 'this' refers to the scene
-      loop: true // Loop the event to keep spawning
+      loop: true, // Loop the event to keep spawning
+    });
+
+    const inputField = document.getElementById("wordInput");
+    inputField.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        this.destroyComet(inputField.value);
+        inputField.value = "";
+      }
     });
   }
 
@@ -57,9 +65,7 @@ class GameScene extends Phaser.Scene {
         this.comets.splice(index, 1); // Remove comet from the array
       }
     });
-
   }
-
 
   // USER DEFINED FUNCTIONS
   // -----------------------------------------------------------------------------
@@ -71,6 +77,19 @@ class GameScene extends Phaser.Scene {
     return Math.floor(Math.random() * (maxX - minX)) + minX; // in case Math.random() = 0, add the minX
   }
 
+  generateRandomString() {
+    let length = 4
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // All possible characters
+    let result = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length); // Get a random index
+      result += characters[randomIndex]; // Append the random character to the result
+    }
+
+    return result; // Return the generated string
+  }
+
   spawnComet() {
     const cometSprite = this.physics.add
       .image(0, 0, "comet")
@@ -78,8 +97,8 @@ class GameScene extends Phaser.Scene {
       .setScale(cometScale);
 
     const cometText = this.add
-      .text(0, 0, "word", {
-        fontSize: "16px",
+      .text(0, 0, this.generateRandomString(), {
+        fontSize: "20px",
         color: "#FFF",
         fontFamily: "Arial",
         wordWrap: { width: wordWrapWidth, useAdvancedWrap: true },
@@ -95,8 +114,19 @@ class GameScene extends Phaser.Scene {
     this.physics.world.enable(cometContainer);
     cometContainer.body.setVelocityY(cometSpeed);
 
-    this.comets.push(cometContainer)
+    this.comets.push(cometContainer);
     cometsSpawned++;
+  }
+
+  destroyComet(text) {
+    this.comets.forEach((comet, index) => {
+      const cometText = comet.list[1];
+
+      if (cometText.text === text) {
+        comet.destroy();
+        this.comets.splice(index, 1); // Remove comet from the array
+      }
+    });
   }
 }
 
