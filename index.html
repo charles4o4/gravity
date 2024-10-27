@@ -3,24 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/test.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="homepage.css" />
     <title>gravity</title>
   </head>
   <body>
-    <div id="progress-board">
-      <div class="header">
-        <p id="game-name">Gravity</p>
+    <div class="container">
+      <div class="header-container">
+        <h1>Welcome to <span class="highlight">Gravity</span>!</h1>
       </div>
-      <div id="progress-container">
-        <p class="progress-header">SCORE</p>
-        <p class="progress-number" id="score-display">0</p>
-        <p class="progress-header">LEVEL</p>
-        <p class="progress-number" id="level-display">1</p>
+      <div class="input-container">
+        <textarea
+          id="wordInput"
+          placeholder="Paste your text here..."
+          rows="5"
+        ></textarea>
       </div>
-      <button id="pausebtn">Pause</button>
+        <button onclick="startGame()">Start Game</button>
     </div>
-    <canvas id="gameCanvas"></canvas>
-    <input type="text" id="wordInput" placeholder="Type the word here..." />
-    <script type="module" src="/main.js"></script>
+    <script>
+      function startGame() {
+        const word = document.getElementById("wordInput").value;
+        localStorage.setItem("gameWord", word); // Save the word to local storage
+        window.location.href = "game.html"; // Redirect to the game page
+      }
+    </script>
   </body>
 </html>
