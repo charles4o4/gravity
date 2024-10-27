@@ -90,7 +90,7 @@ body {
   margin-bottom: 10px;
 }
 
-#pausebtn {
+.btn {
   width: 200px; /* Set the fixed width */
   align-items: center;
   background-color: #FFF;
@@ -119,21 +119,36 @@ body {
   margin-top: auto; /* Pushes the button to the bottom */
 }
 
-#pausebtn:hover,
-#pausebtn:focus {
+.btn:hover,
+.btn:focus {
   border-color: rgba(0, 0, 0, 0.15);
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
   color: rgba(0, 0, 0, 0.65);
 }
 
-#pausebtn:hover {
+.btn:hover {
   transform: translateY(-1px);
 }
 
-#pausebtn:active {
+.btn:active {
   background-color: #F0F0F1;
   border-color: rgba(0, 0, 0, 0.15);
   box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
   color: rgba(0, 0, 0, 0.65);
   transform: translateY(0);
+}
+
+#pause-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  color: white;
+  padding: 20px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 8px;
+  display: none; /* Initially hidden */
+  z-index: 10;
 }

@@ -14,7 +14,7 @@ let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-let cometSpawnInterval = 7000; // time in milliseconds
+let cometSpawnInterval = 3000; // time in milliseconds (normal: 7000)
 let cometsDestroyed = 0;
 
 const wordWrapWidth = 150;
@@ -25,6 +25,7 @@ class GameScene extends Phaser.Scene {
     this.comets = [];
     this.score = 0;
     this.level = 1;
+    this.paused = false;
   }
 
   preload() {
@@ -48,8 +49,11 @@ class GameScene extends Phaser.Scene {
       loop: true, // Loop the event to keep spawning
     });
 
-    const inputField = document.getElementById("wordInput");
-    inputField.addEventListener("keypress", (event) => {
+    this.inputField = document.getElementById("wordInput");
+    this.progressContainer = document.getElementById("progress-board");
+    this.pauseOverlay = document.getElementById("pause-overlay");
+
+    this.inputField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         this.destroyComet(inputField.value);
         inputField.value = "";
@@ -58,33 +62,40 @@ class GameScene extends Phaser.Scene {
 
     this.scoreDisplay = document.getElementById("score-display");
     this.levelDisplay = document.getElementById("level-display");
+
+    const pauseButtons = document.getElementsByClassName("btn");
+    Array.from(pauseButtons).forEach((button) => {
+      button.addEventListener("click", () => {
+        this.togglePause();
+      });
+    });
   }
 
   update() {
-    this.comets.forEach((comet, index) => {
-      // Check if the comet is not visible anymore
-      if (comet.y >= sizes.height) {
-        // Destroy the comet and remove it from the array
-        comet.destroy();
-        this.comets.splice(index, 1); // Remove comet from the array
-      }
-    });
+    // Only update if the game is not paused
+    if (!this.isPaused) {
+      this.comets.forEach((comet, index) => {
+        if (comet.y >= sizes.height) {
+          comet.destroy();
+          this.comets.splice(index, 1);
+        }
+      });
+    }
   }
 
   // USER DEFINED FUNCTIONS
   // -----------------------------------------------------------------------------
   getRandomX() {
-
     // Calculate half of the comet's width after applying the scale factor.
     // This is used to ensure the comet is fully visible on the screen when spawned
-    const cometWidthToOrigin = (cometWidth * cometScale) / 2; 
-  
+    const cometWidthToOrigin = (cometWidth * cometScale) / 2;
+
     // Set the minimum X position for spawning comets.
     // Adding an offset of 325 ensures the comets don't spawn too close to the left side
     // or overlap with UI elements. Adding cometWidthToOrigin ensures the entire comet
     // remains visible on screen.
     const minX = 325 + cometWidthToOrigin; // Minimum to see the full image
-    
+
     // Set the maximum X position for spawning comets.
     // This value is calculated by subtracting cometWidthToOrigin from the screen width (sizes.width),
     // ensuring the comet doesn't spawn partially off-screen on the right side.
@@ -148,6 +159,7 @@ class GameScene extends Phaser.Scene {
         this.score += cometSpeed;
         this.scoreDisplay.innerText = `${this.score}`;
 
+        // check if the user destroyed 5 comets
         if (cometsDestroyed % 5 === 0) {
           if (cometSpeed < 200) {
             cometSpeed += 20;
@@ -162,6 +174,29 @@ class GameScene extends Phaser.Scene {
         }
       }
     });
+  }
+
+  togglePause() {
+    this.isPaused = !this.isPaused;
+
+    // Check if game should be paused or resumed
+    if (this.isPaused) {
+      this.physics.pause(); // Pause all physics-related activity
+      this.time.paused = true; // Pause timed events (e.g., comet spawning)
+
+      this.pauseOverlay.style.display = "block";
+
+      this.inputField.style.display = "none";
+      this.progressContainer.style.display = "none";
+    } else {
+      this.physics.resume(); // Resume physics
+      this.time.paused = false; // Resume timed events
+
+      this.pauseOverlay.style.display = "none";
+
+      this.inputField.style.display = "block";
+      this.progressContainer.style.display = "inline-flex";
+    }
   }
 }
 
