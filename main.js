@@ -136,14 +136,16 @@ class GameScene extends Phaser.Scene {
         this.scoreDisplay.innerText = `${this.score}`;
 
         if (cometsDestroyed % 5 === 0) {
-          cometSpeed += 20;
+          if (cometSpeed < 200) {
+            cometSpeed += 20;
+          }
 
           if (cometSpawnInterval > 4000) {
             cometSpawnInterval -= 200;
           }
 
           this.levelDisplay.innerText = `${(this.level += 1)}`;
-          console.log(this.level)
+          console.log(this.level);
         }
       }
     });
