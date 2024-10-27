@@ -74,13 +74,26 @@ class GameScene extends Phaser.Scene {
   // USER DEFINED FUNCTIONS
   // -----------------------------------------------------------------------------
   getRandomX() {
-    // UPDATE THIS
 
-    // keep in mind that the origin is 0.5
-    const minX = (cometWidth * cometScale) / 2; // Minimum to see the full image
-    const maxX = sizes.width - minX; // The width of the spawn area
+    // Calculate half of the comet's width after applying the scale factor.
+    // This is used to ensure the comet is fully visible on the screen when spawned
+    const cometWidthToOrigin = (cometWidth * cometScale) / 2; 
+  
+    // Set the minimum X position for spawning comets.
+    // Adding an offset of 325 ensures the comets don't spawn too close to the left side
+    // or overlap with UI elements. Adding cometWidthToOrigin ensures the entire comet
+    // remains visible on screen.
+    const minX = 325 + cometWidthToOrigin; // Minimum to see the full image
+    
+    // Set the maximum X position for spawning comets.
+    // This value is calculated by subtracting cometWidthToOrigin from the screen width (sizes.width),
+    // ensuring the comet doesn't spawn partially off-screen on the right side.
+    const maxX = sizes.width - cometWidthToOrigin; // The width of the spawn area
 
-    return Math.floor(Math.random() * (maxX - minX)) + minX + 300; // in case Math.random() = 0, add the minX
+    // Generate a random X position within the range [minX, maxX].
+    // The random value ensures that comets spawn at different positions each time.
+    // Math.floor is used to round down to the nearest integer to keep the position a whole number.
+    return Math.floor(Math.random() * (maxX - minX)) + minX; // in case Math.random() = 0, add the minX
   }
 
   generateRandomString() {
