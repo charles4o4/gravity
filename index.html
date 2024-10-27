@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/test.svg" />
-    <link rel="stylesheet" href="homepage.css" />
+    <link rel="stylesheet" href="./src/css/homepage.css" />
     <title>gravity</title>
   </head>
   <body>
@@ -24,7 +24,7 @@
       function startGame() {
         const word = document.getElementById("wordInput").value;
         localStorage.setItem("gameWord", word); // Save the word to local storage
-        window.location.href = "game.html"; // Redirect to the game page
+        window.location.href = "./src/game.html"; // Redirect to the game page
       }
     </script>
   </body>

@@ -1,4 +1,4 @@
-import "./style.css";
+import "./src/css/style.css";
 import Phaser from "phaser";
 
 // WINDOW ATTRIBUTES
@@ -28,8 +28,8 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("bg", "/assets/bg.png");
-    this.load.image("comet", "/assets/comet.png");
+    this.load.image("bg", "/assets/images/bg.png");
+    this.load.image("comet", "/assets/images/comet.png");
   }
 
   create() {
