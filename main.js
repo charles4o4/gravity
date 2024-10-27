@@ -14,7 +14,7 @@ let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-const cometSpawnInterval = 6000; // time in milliseconds
+const cometSpawnInterval = 7000; // time in milliseconds
 let cometsDestroyed = 0;
 
 const wordWrapWidth = 150;
@@ -23,6 +23,8 @@ class GameScene extends Phaser.Scene {
   constructor() {
     super("scene-game");
     this.comets = [];
+    this.score = 0;
+    this.level = 1;
   }
 
   preload() {
@@ -53,6 +55,9 @@ class GameScene extends Phaser.Scene {
         inputField.value = "";
       }
     });
+
+    this.scoreDisplay = document.getElementById("score-display");
+    this.levelDisplay = document.getElementById("level-display");
   }
 
   update() {
@@ -79,7 +84,7 @@ class GameScene extends Phaser.Scene {
   }
 
   generateRandomString() {
-    let length = 1
+    let length = 1;
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // All possible characters
     let result = "";
 
@@ -125,11 +130,19 @@ class GameScene extends Phaser.Scene {
       if (cometText.text === text) {
         comet.destroy();
         this.comets.splice(index, 1); // Remove comet from the array
-      
+
         cometsDestroyed++;
-        if (cometsDestroyed % 5 === 0 ) {
+        this.score += cometSpeed;
+        this.scoreDisplay.innerText = `${this.score}`;
+
+        if (cometsDestroyed % 5 === 0) {
           cometSpeed += 20;
-          console.log(cometSpeed)
+
+          if (cometSpawnInterval > 4000) {
+            cometSpawnInterval -= 200;
+          }
+
+          this.levelDisplay.innerText = `${(this.level += 1)}`;
         }
       }
     });
