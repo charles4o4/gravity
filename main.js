@@ -14,7 +14,7 @@ let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-const cometSpawnInterval = 7000; // time in milliseconds
+let cometSpawnInterval = 7000; // time in milliseconds
 let cometsDestroyed = 0;
 
 const wordWrapWidth = 150;
@@ -143,6 +143,7 @@ class GameScene extends Phaser.Scene {
           }
 
           this.levelDisplay.innerText = `${(this.level += 1)}`;
+          console.log(this.level)
         }
       }
     });
