@@ -3,20 +3,21 @@ import Phaser from "phaser";
 
 // USER INPUT
 // -----------------------------------------------------------------------------
-const text = localStorage.getItem("flashcards")
+const text = localStorage.getItem("flashcards");
 
 // flashcards[0] = flashcard
 // flashcards[0][0] = term
 // flashcards[0][1] = definition
-let flashcards = []
+let flashcards = [];
 
 text.split(";").forEach((element) => {
-    if (element.trim() !== "") {  // Check if the element is not empty
-        flashcards.push(element.split('\t'));
-    }
-})
+  if (element.trim() !== "") {
+    // Check if the element is not empty
+    flashcards.push(element.split("\t"));
+  }
+});
 
-console.log(flashcards)
+console.log(flashcards);
 
 // WINDOW ATTRIBUTES
 // -----------------------------------------------------------------------------
@@ -25,7 +26,7 @@ const sizes = {
   height: window.innerHeight,
 };
 
-// CONSTANTS 
+// CONSTANTS
 // -----------------------------------------------------------------------------
 const cometScale = 0.4;
 const cometWidth = 512;
@@ -47,12 +48,10 @@ class GameScene extends Phaser.Scene {
     this.flashcardsInUse = [];
     this.failures = [];
 
-    
     // COMET ATTRIBUTES
     // -----------------------------------------------------------------------------
     this.cometSpeed = 60;
     this.cometSpawnInterval = 3000; // time in milliseconds (normal: 7000)
-
   }
 
   preload() {
@@ -83,11 +82,11 @@ class GameScene extends Phaser.Scene {
     this.pauseOverlay = document.getElementById("pause-overlay");
     this.answerOverlay = document.getElementById("answer-overlay");
     this.answer = document.getElementById("answer");
-    this.answerField = document.getElementById("answerInput")
+    this.answerField = document.getElementById("answerInput");
     this.scoreDisplay = document.getElementById("score-display");
     this.levelDisplay = document.getElementById("level-display");
 
-    // EVENT LISTENERS 
+    // EVENT LISTENERS
     // -----------------------------------------------------------------------------
     this.inputField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
@@ -121,7 +120,7 @@ class GameScene extends Phaser.Scene {
       this.comets.forEach((comet, index) => {
         if (comet.y >= sizes.height) {
           this.failures.push(comet.list[1].text);
-          
+
           // this.togglePause();
           // this.showAnswerOverlay();
           comet.destroy();
@@ -156,29 +155,29 @@ class GameScene extends Phaser.Scene {
   }
 
   getRandomFlashcard() {
-    // It should pick a random flashcard that hasn't been used yet. 
+    // It should pick a random flashcard that hasn't been used yet.
     // If all flashcards have appeared, the process should start from the beginning.
-    
+
     if (flashcards.length === 0) {
-        flashcards = this.flashcardsInUse;
-        this.flashcardsInUse = [];
+      flashcards = this.flashcardsInUse;
+      this.flashcardsInUse = [];
     }
-    
+
     // get random flashcard
-    const randomIndex = Math.floor(Math.random() * flashcards.length)
+    const randomIndex = Math.floor(Math.random() * flashcards.length);
     const flashcard = flashcards[randomIndex];
-    
+
     // remove it from flashcards and add it in flashcardsInUse
     flashcards.splice(randomIndex, 1);
     this.flashcardsInUse.push(flashcard);
-    
-    // return the word 
+
+    // return the word
     return flashcard;
-}
+  }
 
   spawnComet() {
     const [term, definition] = this.getRandomFlashcard();
-    
+
     const cometSprite = this.physics.add
       .image(0, 0, "comet")
       .setOrigin(0.5)
@@ -187,9 +186,11 @@ class GameScene extends Phaser.Scene {
     const cometTerm = this.add
       .text(0, 0, term, {
         fontSize: "20px",
-        color: "#FFF",
+        color: "#FFF", // Black text
         fontFamily: "Arial",
         wordWrap: { width: wordWrapWidth, useAdvancedWrap: true },
+        stroke: "#000", // White outline
+        strokeThickness: 4, // Adjust thickness as needed
       })
       .setOrigin(0.5);
 
@@ -209,10 +210,11 @@ class GameScene extends Phaser.Scene {
   }
 
   destroyComet(text) {
-    this.comets.forEach((comet, index) => {
-      const cometText = comet.list[1];
+    for (let index = 0; index < this.comets.length; index++) {
+      const comet = this.comets[index];
 
-      if (cometText.text === text) {
+      // Assuming hiddenDefinition is the property that stores the definition
+      if (comet.hiddenDefinition === text) {
         comet.destroy();
         this.comets.splice(index, 1); // Remove comet from the array
 
@@ -220,7 +222,7 @@ class GameScene extends Phaser.Scene {
         this.score += this.cometSpeed;
         this.scoreDisplay.innerText = `${this.score}`;
 
-        // check if the user destroyed 5 comets
+        // Check if the user destroyed 5 comets
         if (this.cometsDestroyed % 5 === 0) {
           if (this.cometSpeed < 200) {
             this.cometSpeed += 20;
@@ -231,10 +233,11 @@ class GameScene extends Phaser.Scene {
           }
 
           this.levelDisplay.innerText = `${(this.level += 1)}`;
-          console.log(this.level);
         }
+
+        break;
       }
-    });
+    }
   }
 
   togglePause() {
@@ -257,7 +260,7 @@ class GameScene extends Phaser.Scene {
   }
 
   showPauseOverlay() {
-    if (this.isPaused){
+    if (this.isPaused) {
       this.pauseOverlay.style.display = "block";
     } else {
       this.pauseOverlay.style.display = "none";
@@ -265,16 +268,17 @@ class GameScene extends Phaser.Scene {
   }
 
   showAnswerOverlay() {
-    if (this.isPaused){
-      this.answer.innerText = `Answer: ${this.failures[this.failures.length - 1]}`;
+    if (this.isPaused) {
+      this.answer.innerText = `Answer: ${
+        this.failures[this.failures.length - 1]
+      }`;
       this.answerOverlay.style.display = "block";
       console.log(this.isPaused);
     } else {
-      console.log("was here")
+      console.log("was here");
       this.answer.innerText = "";
       this.answerOverlay.style.display = "none";
     }
-
   }
 }
 
