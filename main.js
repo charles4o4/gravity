@@ -105,7 +105,7 @@ class GameScene extends Phaser.Scene {
           this.destroySameComets(this.failures[this.failures.length - 1].definition)
           this.togglePause();
           this.showAnswerOverlay();
-          this.answerField.value = "";
+          this.inputField.focus();
         }
       }
     });
@@ -293,6 +293,7 @@ class GameScene extends Phaser.Scene {
         this.failures[this.failures.length - 1].term
       } - Answer: ${this.failures[this.failures.length - 1].definition}`;
       this.answerOverlay.style.display = "block";
+      this.answerField.focus();
     } else {
       this.answer.innerText = "";
       this.answerOverlay.style.display = "none";
