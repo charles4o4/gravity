@@ -26,6 +26,7 @@ class GameScene extends Phaser.Scene {
     this.score = 0;
     this.level = 1;
     this.paused = false;
+    this.failures = [];
   }
 
   preload() {
@@ -52,11 +53,24 @@ class GameScene extends Phaser.Scene {
     this.inputField = document.getElementById("wordInput");
     this.progressContainer = document.getElementById("progress-board");
     this.pauseOverlay = document.getElementById("pause-overlay");
+    this.answerOverlay = document.getElementById("answer-overlay");
+    this.answer = document.getElementById("answer");
+    this.answerField = document.getElementById("answerInput")
 
     this.inputField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
-        this.destroyComet(inputField.value);
-        inputField.value = "";
+        this.destroyComet(this.inputField.value);
+        this.inputField.value = "";
+      }
+    });
+
+    this.answerField.addEventListener("keypress", (event) => {
+      if (event.key === "Enter") {
+        if (this.answerField.value == this.failures[this.failures.length - 1]) {
+          this.togglePause();
+          this.showAnswerOverlay();
+          this.answerField.value = "";
+        }
       }
     });
 
@@ -67,6 +81,7 @@ class GameScene extends Phaser.Scene {
     Array.from(pauseButtons).forEach((button) => {
       button.addEventListener("click", () => {
         this.togglePause();
+        this.showPauseOverlay();
       });
     });
   }
@@ -76,6 +91,10 @@ class GameScene extends Phaser.Scene {
     if (!this.isPaused) {
       this.comets.forEach((comet, index) => {
         if (comet.y >= sizes.height) {
+          this.failures.push(comet.list[1].text);
+          
+          this.togglePause();
+          this.showAnswerOverlay();
           comet.destroy();
           this.comets.splice(index, 1);
         }
@@ -184,19 +203,36 @@ class GameScene extends Phaser.Scene {
       this.physics.pause(); // Pause all physics-related activity
       this.time.paused = true; // Pause timed events (e.g., comet spawning)
 
-      this.pauseOverlay.style.display = "block";
-
       this.inputField.style.display = "none";
       this.progressContainer.style.display = "none";
     } else {
       this.physics.resume(); // Resume physics
       this.time.paused = false; // Resume timed events
 
-      this.pauseOverlay.style.display = "none";
-
       this.inputField.style.display = "block";
       this.progressContainer.style.display = "inline-flex";
     }
+  }
+
+  showPauseOverlay() {
+    if (this.isPaused){
+      this.pauseOverlay.style.display = "block";
+    } else {
+      this.pauseOverlay.style.display = "none";
+    }
+  }
+
+  showAnswerOverlay() {
+    if (this.isPaused){
+      this.answer.innerText = `Answer: ${this.failures[this.failures.length - 1]}`;
+      this.answerOverlay.style.display = "block";
+      console.log(this.isPaused);
+    } else {
+      console.log("was here")
+      this.answer.innerText = "";
+      this.answerOverlay.style.display = "none";
+    }
+
   }
 }
 
