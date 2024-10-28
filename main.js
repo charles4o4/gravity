@@ -102,6 +102,7 @@ class GameScene extends Phaser.Scene {
           this.answerField.value ==
           this.failures[this.failures.length - 1].definition
         ) {
+          this.destroySameComets(this.failures[this.failures.length - 1].definition)
           this.togglePause();
           this.showAnswerOverlay();
           this.answerField.value = "";
@@ -115,6 +116,7 @@ class GameScene extends Phaser.Scene {
       button.addEventListener("click", () => {
         this.togglePause();
         this.showPauseOverlay();
+        // destroy all comets function:
       });
     });
   }
@@ -131,8 +133,6 @@ class GameScene extends Phaser.Scene {
 
           this.togglePause();
           this.showAnswerOverlay();
-          comet.destroy();
-          this.comets.splice(index, 1);
         }
       });
     }
@@ -247,6 +247,17 @@ class GameScene extends Phaser.Scene {
       }
     }
   }
+
+  destroySameComets(text) {
+    // Create a new array excluding the comets that match the text
+    this.comets = this.comets.filter((comet) => {
+        if (comet.hiddenDefinition === text) {
+            comet.destroy(); // Destroy the comet
+            return false; // Exclude this comet from the new array
+        }
+        return true; // Keep this comet in the new array
+    });
+}
 
   togglePause() {
     this.isPaused = !this.isPaused;
