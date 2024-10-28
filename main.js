@@ -1,6 +1,23 @@
 import "./src/css/style.css";
 import Phaser from "phaser";
 
+// USER INPUT
+// -----------------------------------------------------------------------------
+const text = localStorage.getItem("flashcards")
+
+// flashcards[0] = flashcard
+// flashcards[0][0] = term
+// flashcards[0][1] = definition
+let flashcards = []
+
+text.split(";").forEach((element) => {
+    if (element.trim() !== "") {  // Check if the element is not empty
+        flashcards.push(element.split('\t'));
+    }
+})
+
+console.log(flashcards)
+
 // WINDOW ATTRIBUTES
 // -----------------------------------------------------------------------------
 const sizes = {
@@ -8,25 +25,34 @@ const sizes = {
   height: window.innerHeight,
 };
 
-// COMET ATTRIBUTES
+// CONSTANTS 
 // -----------------------------------------------------------------------------
-let cometSpeed = 60;
 const cometScale = 0.4;
 const cometWidth = 512;
 const cometHeight = 512;
-let cometSpawnInterval = 3000; // time in milliseconds (normal: 7000)
-let cometsDestroyed = 0;
-
 const wordWrapWidth = 150;
 
 class GameScene extends Phaser.Scene {
   constructor() {
     super("scene-game");
-    this.comets = [];
+
+    // QUANTATIES AND BOOLEANS
+    // -----------------------------------------------------------------------------
     this.score = 0;
     this.level = 1;
     this.paused = false;
+    this.cometsDestroyed = 0;
+
+    this.comets = [];
+    this.flashcardsInUse = [];
     this.failures = [];
+
+    
+    // COMET ATTRIBUTES
+    // -----------------------------------------------------------------------------
+    this.cometSpeed = 60;
+    this.cometSpawnInterval = 3000; // time in milliseconds (normal: 7000)
+
   }
 
   preload() {
@@ -44,19 +70,25 @@ class GameScene extends Phaser.Scene {
     this.spawnComet();
 
     this.time.addEvent({
-      delay: cometSpawnInterval,
+      delay: this.cometSpawnInterval,
       callback: this.spawnComet,
       callbackScope: this, // Ensures 'this' refers to the scene
       loop: true, // Loop the event to keep spawning
     });
 
+    // HTML ELEMENTS
+    // -----------------------------------------------------------------------------
     this.inputField = document.getElementById("wordInput");
     this.progressContainer = document.getElementById("progress-board");
     this.pauseOverlay = document.getElementById("pause-overlay");
     this.answerOverlay = document.getElementById("answer-overlay");
     this.answer = document.getElementById("answer");
     this.answerField = document.getElementById("answerInput")
+    this.scoreDisplay = document.getElementById("score-display");
+    this.levelDisplay = document.getElementById("level-display");
 
+    // EVENT LISTENERS 
+    // -----------------------------------------------------------------------------
     this.inputField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
         this.destroyComet(this.inputField.value);
@@ -74,9 +106,6 @@ class GameScene extends Phaser.Scene {
       }
     });
 
-    this.scoreDisplay = document.getElementById("score-display");
-    this.levelDisplay = document.getElementById("level-display");
-
     const pauseButtons = document.getElementsByClassName("btn");
     Array.from(pauseButtons).forEach((button) => {
       button.addEventListener("click", () => {
@@ -93,8 +122,8 @@ class GameScene extends Phaser.Scene {
         if (comet.y >= sizes.height) {
           this.failures.push(comet.list[1].text);
           
-          this.togglePause();
-          this.showAnswerOverlay();
+          // this.togglePause();
+          // this.showAnswerOverlay();
           comet.destroy();
           this.comets.splice(index, 1);
         }
@@ -126,27 +155,37 @@ class GameScene extends Phaser.Scene {
     return Math.floor(Math.random() * (maxX - minX)) + minX; // in case Math.random() = 0, add the minX
   }
 
-  generateRandomString() {
-    let length = 1;
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"; // All possible characters
-    let result = "";
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length); // Get a random index
-      result += characters[randomIndex]; // Append the random character to the result
+  getRandomFlashcard() {
+    // It should pick a random flashcard that hasn't been used yet. 
+    // If all flashcards have appeared, the process should start from the beginning.
+    
+    if (flashcards.length === 0) {
+        flashcards = this.flashcardsInUse;
+        this.flashcardsInUse = [];
     }
-
-    return result; // Return the generated string
-  }
+    
+    // get random flashcard
+    const randomIndex = Math.floor(Math.random() * flashcards.length)
+    const flashcard = flashcards[randomIndex];
+    
+    // remove it from flashcards and add it in flashcardsInUse
+    flashcards.splice(randomIndex, 1);
+    this.flashcardsInUse.push(flashcard);
+    
+    // return the word 
+    return flashcard;
+}
 
   spawnComet() {
+    const [term, definition] = this.getRandomFlashcard();
+    
     const cometSprite = this.physics.add
       .image(0, 0, "comet")
       .setOrigin(0.5)
       .setScale(cometScale);
 
-    const cometText = this.add
-      .text(0, 0, this.generateRandomString(), {
+    const cometTerm = this.add
+      .text(0, 0, term, {
         fontSize: "20px",
         color: "#FFF",
         fontFamily: "Arial",
@@ -156,12 +195,15 @@ class GameScene extends Phaser.Scene {
 
     const cometContainer = this.add.container(this.getRandomX(), 0, [
       cometSprite,
-      cometText,
+      cometTerm,
     ]);
+    // add definition as a property so its invisible
+    cometContainer.hiddenDefinition = definition;
+
     cometContainer.setSize(cometWidth * cometScale, cometHeight * cometScale);
 
     this.physics.world.enable(cometContainer);
-    cometContainer.body.setVelocityY(cometSpeed);
+    cometContainer.body.setVelocityY(this.cometSpeed);
 
     this.comets.push(cometContainer);
   }
@@ -174,18 +216,18 @@ class GameScene extends Phaser.Scene {
         comet.destroy();
         this.comets.splice(index, 1); // Remove comet from the array
 
-        cometsDestroyed++;
-        this.score += cometSpeed;
+        this.cometsDestroyed++;
+        this.score += this.cometSpeed;
         this.scoreDisplay.innerText = `${this.score}`;
 
         // check if the user destroyed 5 comets
-        if (cometsDestroyed % 5 === 0) {
-          if (cometSpeed < 200) {
-            cometSpeed += 20;
+        if (this.cometsDestroyed % 5 === 0) {
+          if (this.cometSpeed < 200) {
+            this.cometSpeed += 20;
           }
 
-          if (cometSpawnInterval > 4000) {
-            cometSpawnInterval -= 200;
+          if (this.cometSpawnInterval > 4000) {
+            this.cometSpawnInterval -= 200;
           }
 
           this.levelDisplay.innerText = `${(this.level += 1)}`;

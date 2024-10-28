@@ -22,8 +22,8 @@
     </div>
     <script>
       function startGame() {
-        const word = document.getElementById("wordInput").value;
-        localStorage.setItem("gameWord", word); // Save the word to local storage
+        const text = document.getElementById("wordInput").value;
+        localStorage.setItem("text", text); // Save the word to local storage
         window.location.href = "./src/game.html"; // Redirect to the game page
       }
     </script>
