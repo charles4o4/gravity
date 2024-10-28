@@ -95,9 +95,13 @@ class GameScene extends Phaser.Scene {
       }
     });
 
+    // Answer Overlay
     this.answerField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
-        if (this.answerField.value == this.failures[this.failures.length - 1]) {
+        if (
+          this.answerField.value ==
+          this.failures[this.failures.length - 1].definition
+        ) {
           this.togglePause();
           this.showAnswerOverlay();
           this.answerField.value = "";
@@ -105,6 +109,7 @@ class GameScene extends Phaser.Scene {
       }
     });
 
+    // Pause Overlay
     const pauseButtons = document.getElementsByClassName("btn");
     Array.from(pauseButtons).forEach((button) => {
       button.addEventListener("click", () => {
@@ -119,10 +124,13 @@ class GameScene extends Phaser.Scene {
     if (!this.isPaused) {
       this.comets.forEach((comet, index) => {
         if (comet.y >= sizes.height) {
-          this.failures.push(comet.list[1].text);
+          this.failures.push({
+            term: comet.list[1].text,
+            definition: comet.hiddenDefinition,
+          });
 
-          // this.togglePause();
-          // this.showAnswerOverlay();
+          this.togglePause();
+          this.showAnswerOverlay();
           comet.destroy();
           this.comets.splice(index, 1);
         }
@@ -269,13 +277,12 @@ class GameScene extends Phaser.Scene {
 
   showAnswerOverlay() {
     if (this.isPaused) {
-      this.answer.innerText = `Answer: ${
-        this.failures[this.failures.length - 1]
-      }`;
+      this.answerField.value = "";
+      this.answer.innerText = `Term: ${
+        this.failures[this.failures.length - 1].term
+      } - Answer: ${this.failures[this.failures.length - 1].definition}`;
       this.answerOverlay.style.display = "block";
-      console.log(this.isPaused);
     } else {
-      console.log("was here");
       this.answer.innerText = "";
       this.answerOverlay.style.display = "none";
     }
