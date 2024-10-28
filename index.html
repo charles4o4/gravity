@@ -23,7 +23,7 @@
     <script>
       function startGame() {
         const text = document.getElementById("wordInput").value;
-        localStorage.setItem("text", text); // Save the word to local storage
+        sessionStorage.setItem("text", text); // Save the word to local storage
         window.location.href = "./src/game.html"; // Redirect to the game page
       }
     </script>

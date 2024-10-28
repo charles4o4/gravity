@@ -3,7 +3,7 @@ import Phaser from "phaser";
 
 // USER INPUT
 // -----------------------------------------------------------------------------
-const text = localStorage.getItem("flashcards");
+const text = sessionStorage.getItem("text");
 
 // flashcards[0] = flashcard
 // flashcards[0][0] = term
