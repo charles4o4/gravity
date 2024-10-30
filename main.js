@@ -51,7 +51,9 @@ class GameScene extends Phaser.Scene {
     // COMET ATTRIBUTES
     // -----------------------------------------------------------------------------
     this.cometSpeed = 60;
-    this.cometSpawnInterval = 3000; // time in milliseconds (normal: 7000)
+    this.cometMaxSpeed = 100;
+    this.cometSpawnInterval = 6000; // time in milliseconds (normal: 7000)
+    this.cometMaxSpawnInterval = 5000;
   }
 
   preload() {
@@ -110,6 +112,7 @@ class GameScene extends Phaser.Scene {
           this.togglePause();
           this.showAnswerOverlay();
           this.inputField.focus();
+          this.inputField.value = "";
         }
       }
     });
@@ -249,11 +252,11 @@ class GameScene extends Phaser.Scene {
 
         // Check if the user destroyed 5 comets
         if (this.cometsDestroyed % 5 === 0) {
-          if (this.cometSpeed < 200) {
+          if (this.cometSpeed < this.cometMaxSpeed) {
             this.cometSpeed += 20;
           }
 
-          if (this.cometSpawnInterval > 4000) {
+          if (this.cometSpawnInterval < this.cometMaxSpawnInterval) {
             this.cometSpawnInterval -= 200;
           }
 
