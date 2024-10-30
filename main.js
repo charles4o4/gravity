@@ -55,8 +55,9 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("bg", "/assets/images/bg.png");
-    this.load.image("comet", "/assets/images/comet.png");
+    this.load.image("bg", "/assets/images/bg.jpg");
+    this.load.image("yellowapple", "/assets/images/yellowapple.png");
+    this.load.image("redapple", "/assets/images/redapple.png");
   }
 
   create() {
@@ -102,7 +103,9 @@ class GameScene extends Phaser.Scene {
           this.answerField.value ==
           this.failures[this.failures.length - 1].definition
         ) {
-          this.destroySameComets(this.failures[this.failures.length - 1].definition)
+          this.destroySameComets(
+            this.failures[this.failures.length - 1].definition
+          );
           this.togglePause();
           this.showAnswerOverlay();
           this.inputField.focus();
@@ -186,19 +189,23 @@ class GameScene extends Phaser.Scene {
   spawnComet() {
     const [term, definition] = this.getRandomFlashcard();
 
+    const texture = this.failures.some((failure) => failure.term === term)
+      ? "redapple"
+      : "yellowapple";
+
     const cometSprite = this.physics.add
-      .image(0, 0, "comet")
+      .image(0, 0, texture)
       .setOrigin(0.5)
       .setScale(cometScale);
 
     const cometTerm = this.add
       .text(0, 0, term, {
         fontSize: "20px",
-        color: "#FFF", // Black text
+        color: "#000", // Black text
         fontFamily: "Arial",
         wordWrap: { width: wordWrapWidth, useAdvancedWrap: true },
-        stroke: "#000", // White outline
-        strokeThickness: 4, // Adjust thickness as needed
+        stroke: "#FFF", // White outline
+        strokeThickness: 3, // Adjust thickness as needed
       })
       .setOrigin(0.5);
 
@@ -251,13 +258,13 @@ class GameScene extends Phaser.Scene {
   destroySameComets(text) {
     // Create a new array excluding the comets that match the text
     this.comets = this.comets.filter((comet) => {
-        if (comet.hiddenDefinition === text) {
-            comet.destroy(); // Destroy the comet
-            return false; // Exclude this comet from the new array
-        }
-        return true; // Keep this comet in the new array
+      if (comet.hiddenDefinition === text) {
+        comet.destroy(); // Destroy the comet
+        return false; // Exclude this comet from the new array
+      }
+      return true; // Keep this comet in the new array
     });
-}
+  }
 
   togglePause() {
     this.isPaused = !this.isPaused;
