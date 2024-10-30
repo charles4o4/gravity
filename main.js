@@ -39,6 +39,10 @@ class GameScene extends Phaser.Scene {
 
     // QUANTATIES AND BOOLEANS
     // -----------------------------------------------------------------------------
+    this.userInput;
+
+    // QUANTATIES AND BOOLEANS
+    // -----------------------------------------------------------------------------
     this.score = 0;
     this.level = 1;
     this.paused = false;
@@ -92,10 +96,27 @@ class GameScene extends Phaser.Scene {
 
     // EVENT LISTENERS
     // -----------------------------------------------------------------------------
+    // destroy comet with input
     this.inputField.addEventListener("keypress", (event) => {
       if (event.key === "Enter") {
+        this.userInput = this.inputField.value;
         this.destroyComet(this.inputField.value);
         this.inputField.value = "";
+      }
+    });
+
+    // show the last input
+    this.inputField.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowUp") {
+        this.inputField.value = this.userInput;
+
+        // Move the cursor to the end of the input
+        setTimeout(() => {
+          this.inputField.setSelectionRange(
+            this.userInput.length,
+            this.userInput.length
+          ); 
+        }, 1); // 0 -> it will not work
       }
     });
 
