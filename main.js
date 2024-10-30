@@ -39,7 +39,7 @@ class GameScene extends Phaser.Scene {
 
     // QUANTATIES AND BOOLEANS
     // -----------------------------------------------------------------------------
-    this.userInput;
+    this.userInput = "";
 
     // QUANTATIES AND BOOLEANS
     // -----------------------------------------------------------------------------
