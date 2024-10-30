@@ -86,6 +86,7 @@ class GameScene extends Phaser.Scene {
     this.answerField = document.getElementById("answerInput");
     this.scoreDisplay = document.getElementById("score-display");
     this.levelDisplay = document.getElementById("level-display");
+    this.gameOverDisplay = document.getElementById("game-over");
 
     // EVENT LISTENERS
     // -----------------------------------------------------------------------------
@@ -129,13 +130,22 @@ class GameScene extends Phaser.Scene {
     if (!this.isPaused) {
       this.comets.forEach((comet, index) => {
         if (comet.y >= sizes.height) {
-          this.failures.push({
-            term: comet.list[1].text,
-            definition: comet.hiddenDefinition,
-          });
+          const alreadyExists = this.failures.some(
+            (failure) => failure.term === comet.list[1].text
+          );
 
-          this.togglePause();
-          this.showAnswerOverlay();
+          if (alreadyExists) {
+            this.togglePause();
+            this.gameOver();
+          } else {
+            this.failures.push({
+              term: comet.list[1].text,
+              definition: comet.hiddenDefinition,
+            });
+
+            this.togglePause();
+            this.showAnswerOverlay();
+          }
         }
       });
     }
@@ -305,6 +315,10 @@ class GameScene extends Phaser.Scene {
       this.answer.innerText = "";
       this.answerOverlay.style.display = "none";
     }
+  }
+
+  gameOver() {
+    this.gameOverDisplay.style.display = "block";
   }
 }
 

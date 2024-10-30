@@ -170,3 +170,18 @@ body {
   display: none; /* Initially hidden */
   z-index: 10;
 }
+
+#game-over {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  color: white;
+  padding: 20px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 8px;
+  display: none; /* Initially hidden */
+  z-index: 10;
+}
