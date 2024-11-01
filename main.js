@@ -115,7 +115,7 @@ class GameScene extends Phaser.Scene {
           this.inputField.setSelectionRange(
             this.userInput.length,
             this.userInput.length
-          ); 
+          );
         }, 1); // 0 -> it will not work
       }
     });
