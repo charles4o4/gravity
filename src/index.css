@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 * {
   margin: 0;
@@ -10,9 +11,10 @@
 body {
   width: 100vw;
   height: 100vh;
+  background-color: #f3f4f6;
 }
 
-/* CLASSES */
+/* CLASSES - Homepage */
 /* -------------------------------------------------------------------------------------------------------------------------------------------- */
 
 .homepage-background {
@@ -64,17 +66,33 @@ body {
   transition: transform 0.2s ease;
 }
 
-/* Resize on Hover */
 .homepage-button:hover {
-  transform: scale(1.05); /* Scale the button up by 5% */
+  transform: scale(1.05);
 }
 
-/* Optional: Active state to make the button shrink slightly on click */
 .homepage-button:active {
-  transform: scale(0.95); /* Scale down on click */
+  transform: scale(0.95); 
 }
 
-/* IDs */
+/* CLASSES - Upload/Settings */
+/* -------------------------------------------------------------------------------------------------------------------------------------------- */
+.headerbtn {
+  width: 3.385vw;
+  height: 3.704vh;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.progress-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+}
+
+/* IDs - Homepage */
 /* -------------------------------------------------------------------------------------------------------------------------------------------- */
 
 #gravity-h1 {
@@ -102,4 +120,53 @@ body {
 #homepage-startbtn {
     background-color: #fff;
     border: 1px solid #fff;
+}
+
+/* IDs - Upload/Settings */
+/* -------------------------------------------------------------------------------------------------------------------------------------------- */
+#header { 
+  width: 100vw;
+  height: 7.4vh;
+  background-color: #fff;
+
+  padding: 0 2vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#progressbar {
+  width: 14.948vw;
+  height: 2.315vh;
+  margin-left: 10px;
+  /* border: 1px solid black; */
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#cancelbtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.875rem;
+}
+
+#header-backbtn {
+  background-color: transparent;
+  margin-right: 10px;
+}
+
+#header-nextbtn {
+  background-color: #0C67FF;
+  color: white;
+}
+
+#progress-text-active {
+  font-weight: 700;
+}
+
+#progress-text-unactive {
+  color: rgba(0, 0, 0, 0.5);
 }

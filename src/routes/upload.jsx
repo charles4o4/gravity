@@ -1,5 +1,11 @@
+import Header from "../components/header";
+
 const Upload = () => {
-  return <>Upload your flashcards here:</>;
+  return (
+    <>
+      <Header />
+    </>
+  );
 };
 
 export default Upload;

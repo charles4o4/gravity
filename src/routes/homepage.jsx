@@ -8,7 +8,7 @@ const Homepage = () => {
   };
 
   const handlePlayBtn = () => {
-    navigate("/settings");
+    navigate("/upload");
   };
 
   return (

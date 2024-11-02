@@ -1,5 +1,12 @@
+import Header from "../components/header";
+
 const Settings = () => {
-  return <>What settings do you want to change?</>;
+  return (
+    <>
+      <Header />
+      What settings do you want to change?
+    </>
+  );
 };
 
 export default Settings;
