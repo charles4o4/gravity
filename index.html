@@ -1,31 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/test.svg" />
-    <link rel="stylesheet" href="./src/css/homepage.css" />
-    <title>gravity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gravity</title>
   </head>
   <body>
-    <div class="container">
-      <div class="header-container">
-        <h1>Welcome to <span class="highlight">Gravity</span>!</h1>
-      </div>
-      <div class="input-container">
-        <textarea
-          id="wordInput"
-          placeholder="Paste your text here..."
-          rows="5"
-        ></textarea>
-      </div>
-        <button onclick="startGame()">Start Game</button>
-    </div>
-    <script>
-      function startGame() {
-        const text = document.getElementById("wordInput").value;
-        sessionStorage.setItem("text", text); // Save the word to local storage
-        window.location.href = "./src/game.html"; // Redirect to the game page
-      }
-    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
