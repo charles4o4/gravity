@@ -1,4 +1,10 @@
+import { Link } from "react-router-dom";
+
 const Homepage = () => {
+  const handleHowToPlayBtn = () => {
+    window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  };
+
   return (
     <>
       <div className="homepage-background">
@@ -9,8 +15,11 @@ const Homepage = () => {
           </div>
         </div>
         <div className="homepage-footer">
-          <button className="homepage-button" id="homepage-howbtn">HOW TO PLAY</button>
-          <button className="homepage-button" id="homepage-startbtn">START PLAYING</button>
+          {/* How to play button will send the user to an youtube video. */}
+          <button className="homepage-button" id="homepage-howbtn" onClick={handleHowToPlayBtn}>HOW TO PLAY</button>
+          <Link to="/upload">
+            <button className="homepage-button" id="homepage-startbtn">START PLAYING</button>
+          </Link>
         </div>
       </div>
     </>

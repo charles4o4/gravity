@@ -60,6 +60,18 @@ body {
   text-align: center;
   margin-bottom: 4.63vh;
   display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+/* Resize on Hover */
+.homepage-button:hover {
+  transform: scale(1.05); /* Scale the button up by 5% */
+}
+
+/* Optional: Active state to make the button shrink slightly on click */
+.homepage-button:active {
+  transform: scale(0.95); /* Scale down on click */
 }
 
 /* IDs */
@@ -84,7 +96,7 @@ body {
   color: white;
   background-color: transparent;
   border: 1px solid #fff;
-  margin-right: 3.125vw;
+  margin-right: 2.125vw;
 }
 
 #homepage-startbtn {
