@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
+  const navigate = useNavigate();
+
   const handleHowToPlayBtn = () => {
     window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+  };
+
+  const handlePlayBtn = () => {
+    navigate("/settings");
   };
 
   return (
@@ -16,10 +22,20 @@ const Homepage = () => {
         </div>
         <div className="homepage-footer">
           {/* How to play button will send the user to an youtube video. */}
-          <button className="homepage-button" id="homepage-howbtn" onClick={handleHowToPlayBtn}>HOW TO PLAY</button>
-          <Link to="/upload">
-            <button className="homepage-button" id="homepage-startbtn">START PLAYING</button>
-          </Link>
+          <button
+            className="homepage-button"
+            id="homepage-howbtn"
+            onClick={handleHowToPlayBtn}
+          >
+            HOW TO PLAY
+          </button>
+          <button
+            className="homepage-button"
+            id="homepage-startbtn"
+            onClick={handlePlayBtn}
+          >
+            START PLAYING
+          </button>
         </div>
       </div>
     </>
