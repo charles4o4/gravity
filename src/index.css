@@ -1,10 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&display=swap");
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    height: 100vh;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* CLASSES */
+/* -------------------------------------------------------------------------------------------------------------------------------------------- */
+
+.homepage-background {
+  height: 100vh;
+  width: 100vw;
+
+  background-image: url("./assets/images/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.homepage-main {
+  color: white;
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.homepage-footer {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homepage-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.homepage-button {
+  width: 11.5vw;
+  height: 5.556vh;
+  border-radius: 60px;
+  font-family: "Alexandria", sans-serif;
+  font-size: 1vw;
+  text-align: center;
+  margin-bottom: 4.63vh;
+  display: inline-block;
+}
+
+/* IDs */
+/* -------------------------------------------------------------------------------------------------------------------------------------------- */
+
+#gravity-h1 {
+  font-size: 6.5vw;
+  font-family: "Bagel Fat One", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  margin-bottom: -1vh;
+}
+
+#gravity-p {
+  font-family: "Alexandria", sans-serif;
+  font-size: 1vw;
+  line-height: 120%;
+  font-weight: 400px;
+}
+
+#homepage-howbtn {
+  color: white;
+  background-color: transparent;
+  border: 1px solid #fff;
+  margin-right: 3.125vw;
+}
+
+#homepage-startbtn {
+    background-color: #fff;
+    border: 1px solid #fff;
 }
